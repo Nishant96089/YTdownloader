@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Downloader</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
+    {% load custom_filters %}
+    <style>
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 2s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-container > .loader {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <center class="top">
+        <div class="header-container">
+            <img
+                width="100"
+                height="100"
+                src="https://img.icons8.com/bubbles/100/youtube.png"
+                alt="youtube"
+            />
+            <h1 class="header">: Online Video Downloader</h1>
+        </div>
+        {% if message %}
+        <p class="msg">{{ message }}</p>
+        {% endif %}
+        <form id="video-form" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="loading-container">
+                <button type="submit" class="btn">
+                    <img
+                        width="64"
+                        height="64"
+                        src="https://img.icons8.com/cute-clipart/64/search.png"
+                        alt="search"
+                    />
+                </button>
+                <div id="loader" class="loader"></div>
+            </div>
+        </form>
+    </center>
+
+    {% if video_info %}
+    <div class="details">
+        <div class="thumbnail">
+            <img src="{{ video_info.thumbnail }}" alt="Thumbnail" class="image" />
+        </div>
+        <div class="details-right">
+            <p class="title">{{ video_info.title }}</p>
+            <div class="details-row">
+                <p class="row-text">
+                    <strong>Duration:</strong> {{ video_info.duration }} seconds
+                </p>
+                <p class="row-text"><strong>Views:</strong> {{ video_info.views }}</p>
+                <p class="row-text"><strong>Likes:</strong> {{ video_info.likes }}</p>
+            </div>
+        </div>
+    </div>
+
+    <table class="tab">
+        <thead>
+            <tr>
+                <th>Resolution</th>
+                <th>File Type</th>
+                <th>File Size</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for format in video_info.formats %}
+            <tr>
+                <td>{{ format.resolution }}</td>
+                <td>{{ format.ext }}</td>
+                <td>{{ format.filesize_mb }} MB</td>
+                <td>
+                    <form class="download-form" method="post" action="{% url 'download' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="url" value="{{ request.POST.video_url }}">
+                        <input type="hidden" name="format_id" value="{{ format.format_id }}">
+                        <div class="loading-container">
+                            <button type="submit" class="download-btn">Download</button>
+                            <div class="loader"></div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <center>
+        <p class="no-data">Details of the video will be shown here! 🤓</p>
+    </center>
+    {% endif %}
+    <script src="{% static 'scripts.js' %}"></script>
+</body>
+</html>
