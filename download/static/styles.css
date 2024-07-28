@@ -146,3 +146,81 @@ a:hover {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+
+@media only screen and (max-width: 480px) {
+  .top {
+      padding-top: 50px;
+      height: auto;
+  }
+
+  .header-container {
+      flex-direction: column;
+      align-items: center;
+      width: 80%;
+  }
+
+  .header {
+      font-size: 28px;
+      text-align: center;
+  }
+
+  .msg {
+      font-size: 18px;
+  }
+
+  .form-control {
+      width: 80%;
+      font-size: 18px;
+      height: auto;
+  }
+
+  .btn img {
+      width: 48px;
+      height: 48px;
+  }
+
+  .details {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+  }
+
+  .thumbnail, .details-right {
+      width: 100%;
+  }
+
+  .image {
+      width: 100%;
+      height: auto;
+  }
+
+  .title {
+      font-size: 30px;
+  }
+
+  .details-row {
+      flex-direction: column;
+      font-size: 22px;
+  }
+
+  .row-text {
+      margin-right: 0;
+  }
+
+  table {
+      font-size: 20px;
+  }
+
+  .tab {
+      font-size: 18px;
+  }
+
+  .download-btn {
+      font-size: 16px;
+  }
+
+  .no-data {
+      font-size: 28px;
+      margin-top: 50px;
+  }
+}
